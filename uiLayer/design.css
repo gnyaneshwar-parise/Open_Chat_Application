@@ -1,0 +1,419 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== BASE ===== */
+body {
+  font-family: "Segoe UI", system-ui, Arial, sans-serif;
+  background: #0a0a0a;
+  color: #eaeaea;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ===== LAYOUT ===== */
+.shell {
+  display: flex;
+  height: 100vh;
+}
+
+/* ===== SIDEBAR (PC) ===== */
+.sidebar {
+  width: 80px;
+  background: #0f0f0f;
+  border-right: 1px solid #1f1f1f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  gap: 16px;
+}
+
+.logo {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.side-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 18px;
+}
+
+.side-btn:hover {
+  background: #1f1f1f;
+  color: #fff;
+}
+
+/* ===== APP ===== */
+.app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #0b0b0b;
+
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ===== HEADER ===== */
+.chat-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid #1f1f1f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  /* 🔑 FIX HEADER */
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #0b0b0b;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 11px;
+  color: #9e9e9e;
+}
+
+.header-actions button {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #ccc;
+}
+
+.header-actions button:hover {
+  background: #2a2a2a;
+}
+
+/* ===== CHAT ===== */
+.chat {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+
+   /* 🔑 ONLY THIS SCROLLS */
+  overscroll-behavior: contain;
+}
+
+/* ===== MESSAGES ===== */
+.message {
+  max-width: 75%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+}
+
+.my {
+  background: #1f3b4d;
+  margin-left: auto;
+}
+
+.other {
+  background: #1a1a1a;
+}
+
+.system {
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  margin: 10px 0;
+}
+
+/* ===== INPUT ===== */
+.input-bar {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #1f1f1f;
+
+  /* 🔑 FIX INPUT */
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  background: #0b0b0b;
+}
+
+.input-bar button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #ccc;
+}
+
+.input-bar input {
+  flex: 1;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 12px 14px;
+  color: #fff;
+
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+/* SEND */
+#send-btn {
+  background: #4caf50;
+  color: #000;
+}
+
+/* ===== INFO PANEL ===== */
+.info-panel {
+  width: 260px;
+  background: #0f0f0f;
+  border-left: 1px solid #1f1f1f;
+  padding: 16px;
+  transform: translateX(100%);
+  transition: 0.3s;
+}
+
+.info-panel.open {
+  transform: translateX(0);
+}
+
+/* ================= MOBILE FIX ================= */
+@media (max-width: 768px) {
+
+  body {
+    background: #000;
+  }
+
+  .shell {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .app {
+    width: 100%;
+    height: 100vh;
+  }
+
+  .chat {
+    padding: 12px;
+  }
+
+  .message {
+    max-width: 85%;
+  }
+
+  .input-bar button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .info-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+  }
+}
+/* ================= MOBILE FINAL FIX ================= */
+@media (max-width: 600px) {
+
+  /* Prevent zoom & horizontal scroll */
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+    font-size: 14px;
+  }
+
+  /* Layout */
+  .shell {
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* Hide sidebar completely */
+  .sidebar {
+    display: none !important;
+  }
+
+  /* App fills screen */
+  .app {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* Header compact */
+  .chat-header {
+    padding: 10px 12px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .subtitle {
+    font-size: 10px;
+  }
+
+  /* Chat area */
+  .chat {
+    padding: 10px;
+  }
+
+  /* Messages */
+  .message {
+    max-width: 90%;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  /* Input bar */
+  .input-bar {
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .input-bar input {
+    padding: 10px 12px;
+    min-width: 0;
+  }
+
+  /* Buttons – touch friendly */
+  .input-bar button,
+  .header-actions button {
+    width: 42px;
+    height: 42px;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  #send-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+
+  /* Info panel full-screen */
+  .info-panel {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 100;
+  }
+}
+/* ===== ANDROID INPUT ZOOM FIX ===== */
+@media screen and (max-width: 600px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+    transform: scale(1);
+  }
+}
+/* ===== iOS SAFARI FIX ===== */
+input {
+  -webkit-text-size-adjust: 100%;
+}
+/* ===== MOBILE SAFE AREA FIX ===== */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .input-bar {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+}
+
+
+/* ===== FINAL MOBILE INPUT FIX ===== */
+@media (max-width: 600px) {
+  .input-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0b0b0b;
+  }
+
+  .chat {
+    padding-bottom: 80px; /* space for input bar */
+  }
+}
+
+
+/* ===== iOS HEADER FIX ===== */
+/* ===== iOS HEADER FIX (CORRECTED) ===== */
+@supports (-webkit-touch-callout: none) {
+
+  .chat-header {
+    position: fixed;
+    top: env(safe-area-inset-top);
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: #0b0b0b;
+    height: 48px;          /* 🔑 match real header height */
+  }
+
+  .app {
+    padding-top: calc(48px + env(safe-area-inset-top));
+  }
+
+  .chat {
+    padding-top: 0;
+  }
+}
+
+/* ===== ANDROID HEADER FIX ===== */
+@media (max-width: 600px) {
+
+  .chat-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: #0b0b0b;
+    height: 48px;
+  }
+
+  .app {
+    padding-top: 48px; /* space for fixed header */
+  }
+
+  .chat {
+    padding-top: 0;
+  }
+}
+
+
+.close-info {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #ccc;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 18px;
+}
