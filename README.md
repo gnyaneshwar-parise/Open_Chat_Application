@@ -59,6 +59,27 @@ Open_Chat_Application/
 
 ---
 
+## 📸 Screenshots
+
+### Desktop View
+![Desktop Chat UI](screenshots/desktop-chat.png)
+
+### Mobile View
+![Mobile Chat UI](screenshots/mobile-view.jpeg)
+
+### WebSocket Connection Proof
+![WebSocket 101 Status](screenshots/websocket-101.png)
+
+### Cloud Deployment (Render)
+![Render Deployment](screenshots/render-deploy.png)
+
+---
+
+## 🎥 Demo Video
+https://youtu.be/jEdyRr2BL08
+
+---
+
 ## 🎯 Learning Outcomes
 - Understanding of WebSockets and real-time communication
 - Client–server architecture
