@@ -14,6 +14,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const infoPanel = document.getElementById("infoPanel");
   const closeInfoBtn = document.getElementById("closeInfo");
 
+    // ONLINE USERS COUNT
+  const userCountEl = document.getElementById("userCount");
+
+  socket.on("online-users", (count) => {
+    if (userCountEl) {
+      userCountEl.textContent = `Online Users: ${count}`;
+    }
+  });
+
+
+  
   if (!chat || !input || !sendBtn) {
     console.error("Required DOM elements missing");
     return;
