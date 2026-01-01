@@ -11,6 +11,7 @@ A real-time, multi-user chat application built using **Node.js**, **Express**, a
 - WebSocket-based communication using Socket.IO
 - Deployed on Render (free tier) for public access
 - Demonstrates real-time client–server communication
+- Displays real-time online users count using server-side WebSocket state tracking
 
 ---
 
@@ -26,7 +27,7 @@ A real-time, multi-user chat application built using **Node.js**, **Express**, a
 ```
 Open_Chat_Application/
 │
-├── uiLayer/
+├── uiLayer/ # Frontend files
 │   ├── homeView.html
 │   ├── design.css
 │   └── realtime.js
@@ -38,18 +39,35 @@ Open_Chat_Application/
 ```
 ---
 
+## 🧠 System Architecture
+- Client browsers communicate with the Node.js server via HTTP for initial page load.
+- Socket.IO establishes a persistent WebSocket connection for real-time messaging.
+- The server maintains active connections and broadcasts messages and user count updates instantly.
+
+---
+
 ## ▶️ How to Run Locally
 1. Clone the repository:
+   ```bash
    git clone https://github.com/Harshith1702/Open_Chat_Application.git
+   ```
 2. Navigate to the project folder:
+   ```bash
    cd Open_Chat_Application
+   ```
 3. Install dependencies:
+   ```bash
    npm install
+   ```
 4. Start the server:
+   ```bash
    npm start
+   ```
 5. Open browser and visit:
+   ```bash
    http://localhost:4000
-
+   ```
+   
 ---
 
 ## 🌐 Live Demo
@@ -93,7 +111,8 @@ https://youtu.be/jEdyRr2BL08
 
 ## Academic Note
 This project is shared publicly for learning and demonstration purposes.
-Please do not submit this work as your own for academic requirements.
+Cloning the repository is permitted, but reuse or submission should comply
+with institutional academic integrity policies.
 
 ---
 
