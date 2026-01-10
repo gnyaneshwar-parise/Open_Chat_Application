@@ -10,8 +10,8 @@ A feature-rich, real-time chat application with room-based architecture, built u
 - Create custom chat rooms with unique names
 - Browse all available rooms before joining
 - Seamless room switching without page reloads
-- Rooms exist only while users are active (no database required)
-- Automatic room deletion when the last user leaves
+- Rooms are temporary and exist only while users are active (no database required)
+- Rooms are automatically deleted when the last user leaves or when the room creator exits
 
 ### Public & Private Rooms
 - **Public Rooms**: Open for anyone to join
