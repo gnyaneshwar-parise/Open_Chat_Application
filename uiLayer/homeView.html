@@ -16,66 +16,118 @@
 
 <div class="shell">
 
-  <!-- SIDEBAR (PC ONLY) -->
-  <aside class="sidebar">
-    <div class="logo">RTRP</div>
-    <button class="side-btn">💬</button>
-    <button class="side-btn">⭐</button>
-    <button class="side-btn">🕘</button>
-    <button class="side-btn">⚙️</button>
-  </aside>
-
-  <!-- MAIN APP -->
-  <main class="app">
-
-    <!-- HEADER -->
-    <header class="chat-header">
-      <div class="header-text">
-  <div class="title">RTRP Real-Time Chat</div>
-  <div class="subtitle">Live • Secure • Multi-User</div>
-  <div id="userCount" style="font-size:12px;color:#9e9e9e;">
-    Online Users: 0
-  </div>
-</div>
-
-
-      <div class="header-actions">
-        <button id="infoBtn">ℹ️</button>
-        <button id="clearChat">🧹</button>
+  <!-- LOBBY VIEW -->
+  <div id="lobby-view" class="lobby-view">
+    <div class="lobby-container">
+      <div class="lobby-header">
+        <h1>🏠 RTRP Chat Rooms</h1>
+        <p class="lobby-subtitle">Join or create a room to start chatting</p>
       </div>
-    </header>
 
-    <!-- CHAT -->
-    <section id="chat-box" class="chat"></section>
+      <div class="lobby-actions">
+        <button id="createRoomBtn" class="btn-primary">➕ Create Room</button>
+        <div class="search-box">
+          <input type="text" id="searchRooms" placeholder="🔍 Search rooms..." />
+        </div>
+      </div>
 
-    <!-- INPUT -->
-    <footer class="input-bar">
-      <button id="emojiBtn">😀</button>
-      <button id="attachBtn">📎</button>
-      <button id="micBtn">🎤</button>
+      <div class="rooms-grid" id="roomsList"></div>
+    </div>
+  </div>
 
-      <input id="message-input" placeholder="Type a message…" />
+  <!-- CREATE ROOM MODAL -->
+  <div id="createRoomModal" class="modal">
+    <div class="modal-content">
+      <h2>Create New Room</h2>
+      <button class="modal-close" id="closeCreateModal">✕</button>
 
-      <button id="send-btn">➤</button>
-    </footer>
+      <div class="form-group">
+        <label>Room Name</label>
+        <input type="text" id="newRoomName" placeholder="Enter room name" maxlength="30" />
+      </div>
 
-  </main>
+      <div class="form-group">
+        <label>Max Users</label>
+        <input type="number" id="maxUsers" value="10" min="2" max="100" />
+      </div>
 
-  <!-- INFO PANEL -->
-  <aside class="info-panel" id="infoPanel">
-    <button id="closeInfo" class="close-info">✕</button>
-    <h3>Chat Info</h3>
-    <p>Real-time Socket.IO chat</p>
-    <p>Multiple users supported</p>
-    <p>Demo UI interactions enabled</p>
-  </aside>
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="isPrivate" />
+        <label for="isPrivate">🔒 Private Room</label>
+      </div>
+
+      <div class="form-group" id="passwordGroup" style="display:none;">
+        <label>Password</label>
+        <input type="password" id="roomPassword" placeholder="Enter password" />
+      </div>
+
+      <button id="confirmCreateRoom" class="btn-primary">Create Room</button>
+    </div>
+  </div>
+
+  <!-- JOIN ROOM MODAL -->
+  <div id="joinRoomModal" class="modal">
+    <div class="modal-content">
+      <h2>Join Room</h2>
+      <button class="modal-close" id="closeJoinModal">✕</button>
+
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="joinUsername" placeholder="Enter your username" maxlength="20" />
+      </div>
+
+      <div class="form-group" id="joinPasswordGroup" style="display:none;">
+        <label>Password</label>
+        <input type="password" id="joinPassword" placeholder="Enter room password" />
+      </div>
+
+      <button id="confirmJoinRoom" class="btn-primary">Join Room</button>
+    </div>
+  </div>
+
+  <!-- CHAT VIEW -->
+  <div id="chat-view" class="chat-view" style="display:none;">
+    <aside class="sidebar">
+      <div class="logo">RTRP</div>
+      <button class="side-btn">⭐</button>
+      <button class="side-btn">⚙️</button>
+    </aside>
+
+    <main class="app">
+      <header class="chat-header">
+        <div class="header-text">
+          <div class="title" id="roomTitle">Room Name</div>
+          <div class="subtitle" id="roomSubtitle">Users: 0 / 10</div>
+        </div>
+
+        <div class="header-actions">
+          <button id="infoBtn">ℹ️</button>
+          <button id="clearChatBtn">🧹</button>
+          <button id="leaveRoomBtn">🚪</button>
+        </div>
+      </header>
+
+      <section id="chat-box" class="chat"></section>
+
+      <div id="typingIndicator" class="typing-indicator"></div>
+
+      <footer class="input-bar">
+        <button id="emojiBtn">😀</button>
+        <input id="message-input" placeholder="Type a message…" />
+        <button id="send-btn">➤</button>
+      </footer>
+    </main>
+
+    <aside class="info-panel" id="infoPanel">
+      <button id="closeInfo" class="close-info">✕</button>
+      <h3>Room Info</h3>
+      <div id="roomInfo"></div>
+    </aside>
+  </div>
 
 </div>
 
-<!-- Socket.IO -->
 <script src="/socket.io/socket.io.js"></script>
-
-<!-- Client JS -->
 <script src="/realtime.js"></script>
 
 </body>
