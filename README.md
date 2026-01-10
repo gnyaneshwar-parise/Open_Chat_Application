@@ -176,13 +176,13 @@ Open_Chat_Application/
 ### 🔌 WebSocket Connection
 ![WebSocket 101 Protocol](screenshots/websocket-101.png)
 
-*Developer tools showing active WebSocket connection*
+*Browser DevTools showing an active WebSocket (HTTP 101 upgrade) connection via Socket.IO*
 <br><br>
 ### ☁️ Cloud Deployment
 ![Render Deployment Dashboard](screenshots/render-deploy.png)
 
 *Live deployment on Render platform*
-
+<br><br>
 ---
 
 ## 🎯 Learning Outcomes
