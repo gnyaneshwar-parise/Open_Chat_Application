@@ -154,7 +154,7 @@ Open_Chat_Application/
 ![Desktop Chat Interface](screenshots/desktop-view.png)
 
 *Spacious layout with room list sidebar and chat area*
-<br>
+<br><br>
 ### 📱 Mobile View
 
 <p align="center">
@@ -162,22 +162,22 @@ Open_Chat_Application/
 </p>
 
 *Optimized for touch interactions and smaller screens*
-<br>
+<br><br>
 ### 🏠 Create Room Interface
 ![Create Room Modal](screenshots/create-room.png)
 
 *Intuitive room creation with all options visible*
-<br>
+<br><br>
 ### 💬 Active Chat Room
 ![Chat Room in Action](screenshots/chat-room.png)
 
 *Real-time messaging with typing indicators and user list*
-<br>
+<br><br>
 ### 🔌 WebSocket Connection
 ![WebSocket 101 Protocol](screenshots/websocket-101.png)
 
 *Developer tools showing active WebSocket connection*
-<br>
+<br><br>
 ### ☁️ Cloud Deployment
 ![Render Deployment Dashboard](screenshots/render-deploy.png)
 
