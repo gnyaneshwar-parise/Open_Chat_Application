@@ -1,5 +1,4 @@
-let onlineUsers = 0;//users
-
+let onlineUsers = 0; // users
 
 const express = require("express");
 const http = require("http");
@@ -8,6 +7,10 @@ const path = require("path");
 
 const app = express();
 const server = http.createServer(app);
+
+// Room management
+const rooms = new Map(); // Store all rooms
+const MAX_ROOMS = 101;
 
 /* ================= SOCKET.IO SETUP ================= */
 /* (CORS added for ngrok / multi-network access) */
@@ -31,32 +34,161 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
-  // Increase count when user connects
-  onlineUsers++;
-  io.emit("online-users", onlineUsers);
+  // Send current rooms list
+  socket.emit("rooms-list", Array.from(rooms.values()));
 
-  socket.on("new-user", (username) => {
+  // Create room
+  socket.on("create-room", ({ roomName, password, isPrivate, maxUsers, owner }) => {
+    if (rooms.size >= MAX_ROOMS) {
+      socket.emit("error", "Maximum 101 rooms reached");
+      return;
+    }
+
+    if (rooms.has(roomName.toLowerCase())) {
+      socket.emit("error", "Room name already exists");
+      return;
+    }
+
+    const room = {
+      id: roomName.toLowerCase(),
+      name: roomName,
+      owner,
+      password: password || "",
+      isPrivate,
+      maxUsers,
+      users: [],
+      typingUsers: []
+    };
+
+    rooms.set(room.id, room);
+    io.emit("rooms-list", Array.from(rooms.values()));
+  });
+
+  // Join room
+  socket.on("join-room", ({ roomId, username, password }) => {
+    const room = rooms.get(roomId);
+    
+    if (!room) {
+      socket.emit("error", "Room not found");
+      return;
+    }
+
+    if (room.users.some(u => u.username === username)) {
+      socket.emit("error", "Username already in this room");
+      return;
+    }
+
+    if (room.users.length >= room.maxUsers) {
+      socket.emit("error", "Room is full");
+      return;
+    }
+
+    if (room.isPrivate && room.password !== password) {
+      socket.emit("error", "Incorrect password");
+      return;
+    }
+
+    // Add user to room
+    socket.join(roomId);
+    socket.currentRoom = roomId;
     socket.username = username;
-    socket.broadcast.emit("message", `${username} joined the chat`);
+
+    room.users.push({ id: socket.id, username });
+    rooms.set(roomId, room);
+
+    // Notify user
+    socket.emit("joined-room", room);
+    
+    // Notify room with timestamp
+    io.to(roomId).emit("room-message", {
+      type: "system",
+      text: `${username} joined the room`,
+      timestamp: new Date()
+    });
+
+    // Update rooms list for everyone
+    io.emit("rooms-list", Array.from(rooms.values()));
   });
 
+  // Leave room
+  socket.on("leave-room", () => {
+    leaveRoom(socket);
+  });
+
+  // Send message
   socket.on("chat-message", (msg) => {
-    io.emit("message", `${socket.username}: ${msg}`);
+    if (!socket.currentRoom) return;
+
+    io.to(socket.currentRoom).emit("room-message", {
+      type: "user",
+      username: socket.username,
+      text: msg,
+      timestamp: new Date()
+    });
+
+    // Clear typing indicator
+    const room = rooms.get(socket.currentRoom);
+    if (room) {
+      room.typingUsers = room.typingUsers.filter(u => u !== socket.username);
+      io.to(socket.currentRoom).emit("typing-users", room.typingUsers);
+    }
   });
 
+  // Typing indicator
+  socket.on("typing", (isTyping) => {
+    if (!socket.currentRoom) return;
+
+    const room = rooms.get(socket.currentRoom);
+    if (!room) return;
+
+    if (isTyping && !room.typingUsers.includes(socket.username)) {
+      room.typingUsers.push(socket.username);
+    } else if (!isTyping) {
+      room.typingUsers = room.typingUsers.filter(u => u !== socket.username);
+    }
+
+    io.to(socket.currentRoom).emit("typing-users", room.typingUsers);
+  });
+
+  // Disconnect
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
-
-    onlineUsers--;
-    io.emit("online-users", onlineUsers);
-
-    if (socket.username) {
-      io.emit("message", `${socket.username} left the chat`);
-    }
+    leaveRoom(socket);
   });
 });
 
-  
+// Helper function to leave room
+function leaveRoom(socket) {
+  if (!socket.currentRoom) return;
+
+  const room = rooms.get(socket.currentRoom);
+  if (!room) return;
+
+  // Remove user
+  room.users = room.users.filter(u => u.id !== socket.id);
+  room.typingUsers = room.typingUsers.filter(u => u !== socket.username);
+
+  // Notify room with timestamp
+  io.to(socket.currentRoom).emit("room-message", {
+    type: "system",
+    text: `${socket.username} left the room`,
+    timestamp: new Date()
+  });
+
+  // Delete room if empty
+  if (room.users.length === 0) {
+    rooms.delete(socket.currentRoom);
+  } else {
+    rooms.set(socket.currentRoom, room);
+  }
+
+  socket.leave(socket.currentRoom);
+  socket.currentRoom = null;
+
+  // Update rooms list
+  io.emit("rooms-list", Array.from(rooms.values()));
+}
+
 /* ================= SERVER START ================= */
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, "0.0.0.0", () => {
