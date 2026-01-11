@@ -1,6 +1,32 @@
 # Open Chat - Real-Time Room-Based Chat Application 🚀
 
+![GitHub stars](https://img.shields.io/github/stars/Harshith1702/Open_Chat_Application?style=social)
+![GitHub forks](https://img.shields.io/github/forks/Harshith1702/Open_Chat_Application?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/Harshith1702/Open_Chat_Application?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/Harshith1702/Open_Chat_Application)
+![GitHub repo size](https://img.shields.io/github/repo-size/Harshith1702/Open_Chat_Application)
+![GitHub language count](https://img.shields.io/github/languages/count/Harshith1702/Open_Chat_Application)
+![GitHub top language](https://img.shields.io/github/languages/top/Harshith1702/Open_Chat_Application)
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=Harshith1702.Open_Chat_Application)
+
 A feature-rich, real-time chat application with room-based architecture, built using **Node.js**, **Express**, and **Socket.IO**. Experience seamless communication with public/private rooms, typing indicators, and a stunning dark-themed UI optimized for all devices.
+
+---
+
+## 📋 Table of Contents
+- [Features](#-features)
+- [Tech Stack](#️-tech-stack)
+- [Project Structure](#-project-structure)
+- [System Architecture](#-system-architecture)
+- [How to Run Locally](#️-how-to-run-locally)
+- [Live Demo](#-live-demo)
+- [Screenshots](#-screenshots)
+- [Learning Outcomes](#-learning-outcomes)
+- [Security Considerations](#-security-considerations)
+- [Future Enhancements](#-future-enhancements)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Support](#-support)
 
 ---
 
@@ -138,6 +164,10 @@ Open_Chat_Application/
    http://localhost:4000
 ```
 
+6. **Verify installation:**
+   - You should see: `RTRP Server running on port 4000`
+   - Open multiple browser tabs to test multi-user functionality
+   - Check browser console for WebSocket connection status
 ---
 
 ## 🌐 Live Demo
