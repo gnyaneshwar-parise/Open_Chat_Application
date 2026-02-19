@@ -169,33 +169,43 @@ io.on("connection", (socket) => {
 function leaveRoom(socket) {
   if (!socket.currentRoom) return;
 
-  const room = rooms.get(socket.currentRoom);
+  const roomId = socket.currentRoom;
+  const room = rooms.get(roomId);
   if (!room) return;
 
-  // Remove user
-  room.users = room.users.filter(u => u.id !== socket.id);
-  room.typingUsers = room.typingUsers.filter(u => u !== socket.username);
+  const isOwner = room.owner === socket.username;
 
-  // Notify room with timestamp
-  io.to(socket.currentRoom).emit("room-message", {
-    type: "system",
-    text: `${socket.username} left the room`,
-    timestamp: new Date()
-  });
+  // ✅ If OWNER leaves → delete whole room immediately
+  if (isOwner) {
 
-  // Delete room if empty
-  if (room.users.length === 0) {
-    rooms.delete(socket.currentRoom);
+    // Notify all users in that room
+    io.to(roomId).emit("room-deleted", roomId);
+
+    // Force all sockets to leave instantly
+    io.in(roomId).socketsLeave(roomId);
+
+    // Delete the room from Map
+    rooms.delete(roomId);
+
   } else {
-    rooms.set(socket.currentRoom, room);
-    // Update room info for remaining users
-    io.to(socket.currentRoom).emit("room-updated", room);
+
+    // Normal user leaving
+    room.users = room.users.filter(u => u.id !== socket.id);
+    room.typingUsers = room.typingUsers.filter(u => u !== socket.username);
+
+    io.to(roomId).emit("room-message", {
+      type: "system",
+      text: `${socket.username} left the room`,
+      timestamp: new Date()
+    });
+
+    io.to(roomId).emit("room-updated", room);
   }
 
-  socket.leave(socket.currentRoom);
+  socket.leave(roomId);
   socket.currentRoom = null;
 
-  // Update rooms list
+  // Update lobby room list for everyone
   io.emit("rooms-list", Array.from(rooms.values()));
 }
 
