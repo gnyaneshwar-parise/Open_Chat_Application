@@ -366,6 +366,19 @@ leaveRoomBtn.addEventListener("click", () => {
   socket.on("error", (msg) => {
     alert(msg);
   });
+  // When owner deletes the room
+  socket.on("room-deleted", (roomId) => {
+   if (currentRoom && currentRoom.id === roomId) {
+     alert("Room was deleted by the owner");
+
+     // Go back to lobby view
+     lobbyView.style.display = "block";
+     chatView.style.display = "none";
+ 
+     currentRoom = null;
+     chat.innerHTML = "";
+   }
+ });
 
   // ===== HELPER FUNCTIONS =====
 
