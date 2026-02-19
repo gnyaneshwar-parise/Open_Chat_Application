@@ -270,12 +270,11 @@ leaveRoomBtn.addEventListener("click", () => {
 });
 
   function leaveRoom() {
-    socket.emit("leave-room");
-    chatView.style.display = "none";
-    lobbyView.style.display = "block";
-    chat.innerHTML = "";
-    currentRoom = null;
-  }
+  socket.emit("leave-room");
+  setTimeout(() => {
+    location.reload();
+  }, 300);
+}
 
   // Info panel
   if (infoBtn) {
