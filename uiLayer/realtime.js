@@ -372,15 +372,18 @@ leaveRoomBtn.addEventListener("click", () => {
   });
   // When owner deletes the room
   socket.on("room-deleted", (roomId) => {
-   if (currentRoom && currentRoom.id === roomId) {
-     alert("Room was deleted by the owner");
+    if(currentRoom && currentRoom.id === roomId) {
+     const div = document.createElement("div");
+     div.className = "system";
+     div.textContent = "⚠️ Room was deleted by Owner.";
+     chat.appendChild(div);
 
-     // Go back to lobby view
-     lobbyView.style.display = "block";
-     chatView.style.display = "none";
- 
-     currentRoom = null;
-     chat.innerHTML = "";
+     setTimeout(() => {
+       lobbyView.style.display = "block";
+       chatView.style.display = "none";
+       currentRoom = null;
+       chat.innerHTML = "";
+     }, 2000);
    }
  });
 
