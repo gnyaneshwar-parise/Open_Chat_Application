@@ -179,7 +179,7 @@ function leaveRoom(socket) {
   if (isOwner) {
 
     // Notify all users in that room
-    io.to(roomId).emit("room-deleted", roomId);
+    socket.to(roomId).emit("room-deleted", roomId);
 
     // Force all sockets to leave instantly
     io.in(roomId).socketsLeave(roomId);
