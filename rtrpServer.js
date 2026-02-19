@@ -13,6 +13,7 @@ const rooms = new Map(); // Store all rooms
 const MAX_ROOMS = 101;
 
 /* ================= SOCKET.IO SETUP ================= */
+/* (CORS added for ngrok / multi-network access) */
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -23,6 +24,8 @@ const io = new Server(server, {
 /* ================= FRONTEND FILES ================= */
 // Serve frontend files
 app.use(express.static(path.join(__dirname, "uiLayer")));
+
+// Serve main UI page
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "uiLayer", "homeView.html"));
 });
@@ -58,14 +61,18 @@ io.on("connection", (socket) => {
     };
 
     rooms.set(room.id, room);
-
+    
+    // Notify creator that room is ready
     socket.emit("room-created", room);
+    
+    // Update rooms list for everyone
     io.emit("rooms-list", Array.from(rooms.values()));
   });
 
   // Join room
   socket.on("join-room", ({ roomId, username, password }) => {
     const room = rooms.get(roomId);
+    
     if (!room) {
       socket.emit("error", "Room not found");
       return;
@@ -94,15 +101,20 @@ io.on("connection", (socket) => {
     room.users.push({ id: socket.id, username });
     rooms.set(roomId, room);
 
+    // Notify user
     socket.emit("joined-room", room);
 
+    // Notify room with timestamp
     io.to(roomId).emit("room-message", {
       type: "system",
       text: `${username} joined the room`,
       timestamp: new Date()
     });
 
+    // Update room info for all users in the room
     io.to(roomId).emit("room-updated", room);
+
+    // Update rooms list for everyone
     io.emit("rooms-list", Array.from(rooms.values()));
   });
 
@@ -163,17 +175,20 @@ function leaveRoom(socket) {
 
   const isOwner = room.owner === socket.username;
 
+  // ✅ If OWNER leaves → delete whole room immediately
   if (isOwner) {
-    // Notify all non-owner users
-    socket.to(roomId).emit("room-deleted", roomId);
+
+    // Notify all users in that room
+    io.to(roomId).emit("room-deleted", roomId);
 
     // Force all sockets to leave instantly
     io.in(roomId).socketsLeave(roomId);
 
-    // Delete room
+    // Delete the room from Map
     rooms.delete(roomId);
 
   } else {
+
     // Normal user leaving
     room.users = room.users.filter(u => u.id !== socket.id);
     room.typingUsers = room.typingUsers.filter(u => u !== socket.username);
@@ -190,6 +205,7 @@ function leaveRoom(socket) {
   socket.leave(roomId);
   socket.currentRoom = null;
 
+  // Update lobby room list for everyone
   io.emit("rooms-list", Array.from(rooms.values()));
 }
 
