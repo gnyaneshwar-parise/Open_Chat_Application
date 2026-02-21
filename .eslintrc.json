@@ -5,21 +5,21 @@
     "node": true,
     "jest": true
   },
-   "globals": {
+  "globals": {
     "io": "readonly"
   },
   "extends": "eslint:recommended",
   "parserOptions": {
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "commonjs"
   },
   "rules": {
     "no-unused-vars": "warn",
     "no-console": "off",
     "no-undef": "error",
     "semi": ["error", "always"],
-    "quotes": ["warn", "double"],
-    "indent": ["warn", 2],
+    "quotes": "off",
+    "indent": "off",
     "no-multiple-empty-lines": ["warn", { "max": 2 }],
     "eqeqeq": "warn",
     "no-var": "error",
