@@ -1,4 +1,4 @@
-let onlineUsers = 0; // users
+//let onlineUsers = 0; // users
 
 const express = require("express");
 const http = require("http");
