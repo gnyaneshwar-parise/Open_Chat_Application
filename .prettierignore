@@ -1,0 +1,6 @@
+node_modules
+*.log
+*.md
+package-lock.json
+.git
+.github
